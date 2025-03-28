@@ -1,0 +1,4 @@
+github.com/electricbubble/gadb v0.1.0 h1:h7RKlToMlFtGW4rUkAd4GSiFAHioMH5Nx7jtbb2nKi4=
+github.com/electricbubble/gadb v0.1.0/go.mod h1:3293YJ6OWHv/Q6NA5dwSbK43MbmYm8+Vz2d7h5J3IA8=
+github.com/mark3labs/mcp-go v0.17.0 h1:5Ps6T7qXr7De/2QTqs9h6BKeZ/qdeUeGrgM5lPzi930=
+github.com/mark3labs/mcp-go v0.17.0/go.mod h1:KmJndYv7GIgcPVwEKJjNcbhVQ+hJGJhrCCB/9xITzpE=
