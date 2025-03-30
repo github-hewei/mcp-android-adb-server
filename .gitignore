@@ -3,3 +3,6 @@
 .DS_Store
 /screenshots
 *.exe
+mcp-android-adb-server
+dist/
+docs/
