@@ -1,21 +1,35 @@
 package main
 
 import (
+	"io"
 	"log/slog"
 	"mcp-android-adb-server/device"
 	"mcp-android-adb-server/tools"
 	"os"
 
+	"gopkg.in/natefinch/lumberjack.v2"
+
 	"github.com/mark3labs/mcp-go/server"
 )
 
-func main() {
-	deviceId := os.Getenv("DEVICE_ID")
-	if deviceId == "" {
-		slog.Error("DEVICE_ID environment variable not set")
-		return
+func init() {
+	rotateWriter := &lumberjack.Logger{
+		Filename:   "mcp-android-adb.log",
+		MaxSize:    10,
+		MaxBackups: 5,
+		MaxAge:     30,
+		Compress:   true,
 	}
 
+	logger := slog.New(slog.NewJSONHandler(io.MultiWriter(os.Stdout, rotateWriter), &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	}))
+
+	slog.SetDefault(logger)
+}
+
+func main() {
+	deviceId := os.Getenv("DEVICE_ID")
 	screenLockPassword := os.Getenv("SCREEN_LOCK_PASSWORD")
 
 	d, err := device.NewAndroidDevice(deviceId, device.WithScreenPassword(screenLockPassword))

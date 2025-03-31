@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"mcp-android-adb-server/device"
 	"os"
 	"strings"
@@ -356,6 +357,7 @@ func AddToolScreenshot(s *server.MCPServer, d *device.AndroidDevice) {
 		}
 
 		imageBase64 := base64.StdEncoding.EncodeToString(imageBytes)
+		slog.Info("screenshot", "file", file.Name(), "len", len(imageBase64))
 
 		text := "Android device screenshot"
 		return mcp.NewToolResultImage(text, imageBase64, "image/png"), nil

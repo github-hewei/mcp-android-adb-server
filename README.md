@@ -1,5 +1,7 @@
 ## 🚀 mcp-android-adb-server
 
+[![smithery badge](https://smithery.ai/badge/@github-hewei/mcp-android-adb-server)](https://smithery.ai/server/@github-hewei/mcp-android-adb-server)
+
 一个MCP服务用于通过adb操作安卓设备
 
 ### Manual Installation

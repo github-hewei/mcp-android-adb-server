@@ -51,7 +51,7 @@ type Option func(*AndroidDevice)
 // AndroidDevice represents an Android device.
 type AndroidDevice struct {
 	id              string
-	adb             *gadb.Device
+	adb             gadb.Device
 	swipeDuration   time.Duration
 	longTapDuration time.Duration
 	sleepDuration   time.Duration
@@ -84,24 +84,24 @@ func NewAndroidDevice(id string, opts ...Option) (*AndroidDevice, error) {
 }
 
 // getAdb returns a new gadb.Device instance.
-func getAdb(id string) (*gadb.Device, error) {
+func getAdb(id string) (gadb.Device, error) {
 	adb, err := gadb.NewClient()
 	if err != nil {
-		return nil, err
+		return gadb.Device{}, err
 	}
 
 	deviceList, err := adb.DeviceList()
 	if err != nil {
-		return nil, err
+		return gadb.Device{}, err
 	}
 
 	for _, device := range deviceList {
 		if device.Serial() == id {
-			return &device, nil
+			return device, nil
 		}
 	}
 
-	return nil, fmt.Errorf("device not found: %s", id)
+	return gadb.Device{}, nil
 }
 
 // WithSwipeDuration sets the swipe duration for the device.

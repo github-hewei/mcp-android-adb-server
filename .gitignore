@@ -6,3 +6,4 @@
 mcp-android-adb-server
 dist/
 docs/
+*.log
