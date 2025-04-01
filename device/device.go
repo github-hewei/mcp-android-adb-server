@@ -475,7 +475,9 @@ func (d *AndroidDevice) Screenshot() (*os.File, error) {
 	}
 
 	timestamp := time.Now().Format("20060102_150405")
-	filename := fmt.Sprintf("screenshot_%s_%s.png", d.id, timestamp)
+
+	rep := strings.NewReplacer(" ", "_", ":", "_", ".", "_")
+	filename := fmt.Sprintf("screenshot_%s_%s.png", rep.Replace(d.id), timestamp)
 	localPath := filepath.Join(d.screenshotPath, filename)
 
 	remotePath := path.Join(TempPath, filename)
