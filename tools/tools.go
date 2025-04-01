@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 	"mcp-android-adb-server/device"
+	"mcp-android-adb-server/vision"
 	"os"
 	"strings"
 
@@ -447,5 +448,26 @@ func AddToolSystemInfo(s *server.MCPServer, d *device.AndroidDevice) {
 		}
 
 		return mcp.NewToolResultText(string(jsonString)), nil
+	})
+}
+
+// AddToolScreenshotDescription adds a tool for getting screenshot description
+func AddToolScreenshotDescription(s *server.MCPServer, d *device.AndroidDevice, m *vision.Model) {
+	s.AddTool(mcp.NewTool("screenshot_description",
+		mcp.WithDescription("Take a screenshot to get description information, used to verify operation results or obtain coordinates of operable elements"),
+	), func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		file, err := d.Screenshot()
+		if err != nil {
+			return nil, fmt.Errorf("failed to take screenshot: %w", err)
+		}
+		defer file.Close()
+
+		desc, err := m.ScreenshotDescription(file.Name())
+		if err != nil {
+			return nil, fmt.Errorf("failed to get screenshot description: %w", err)
+		}
+
+		slog.Info("screenshot", "file", file.Name(), "desc", desc)
+		return mcp.NewToolResultText(desc), nil
 	})
 }

@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"mcp-android-adb-server/device"
 	"mcp-android-adb-server/tools"
+	"mcp-android-adb-server/vision"
 	"os"
 
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -77,7 +78,7 @@ func registerTools(s *server.MCPServer, d *device.AndroidDevice) {
 		tools.AddToolSwipeRight,
 		tools.AddToolScreenSize,
 		tools.AddToolScreenDpi,
-		tools.AddToolScreenshot,
+		//tools.AddToolScreenshot,
 		tools.AddToolTap,
 		tools.AddToolLongTap,
 		tools.AddToolBack,
@@ -87,5 +88,16 @@ func registerTools(s *server.MCPServer, d *device.AndroidDevice) {
 	// Register all tools
 	for _, registerTool := range toolList {
 		registerTool(s, d)
+	}
+
+	// Register visual tools
+	visualModel := os.Getenv("VISUAL_MODEL_ON")
+
+	if visualModel == "true" {
+		visualModelApiKey := os.Getenv("VISUAL_MODEL_API_KEY")
+		visualModelBaseUrl := os.Getenv("VISUAL_MODEL_BASE_URL")
+		visualModelName := os.Getenv("VISUAL_MODEL_NAME")
+		m := vision.NewModel(visualModelApiKey, visualModelName, visualModelBaseUrl)
+		tools.AddToolScreenshotDescription(s, d, m)
 	}
 }

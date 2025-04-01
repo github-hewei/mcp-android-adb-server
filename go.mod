@@ -9,6 +9,7 @@ require (
 
 require (
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/sashabaranov/go-openai v1.38.1 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 )
