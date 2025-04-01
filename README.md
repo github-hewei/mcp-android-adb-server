@@ -2,7 +2,9 @@
 
 [![smithery badge](https://smithery.ai/badge/@github-hewei/mcp-android-adb-server)](https://smithery.ai/server/@github-hewei/mcp-android-adb-server)
 
-一个MCP服务用于通过adb操作安卓设备
+一个MCP服务用于通过adb操作安卓设备。
+
+2025-04-01：增加支持用视觉模型如`qwen2.5-vl`获取屏幕描述内容。
 
 ### Manual Installation
 
@@ -19,10 +21,14 @@ go build
 {
   "mcpServers": {
     "mcp-android-adb-server": {
-      "command": "mcp-android-adb-server",
+      "command": "D:\\www\\golang\\mcp-android-adb-server\\mcp-android-adb-server.exe",
       "env": {
         "DEVICE_ID": "xxxxx",
-        "SCREEN_LOCK_PASSWORD": "123456"
+        "SCREEN_LOCK_PASSWORD": "123456",
+        "VISUAL_MODEL_ON": "true",
+        "VISUAL_MODEL_API_KEY": "sk-or-xxxxxxxxxxxxxxxxxxx",
+        "VISUAL_MODEL_BASE_URL": "https://openrouter.ai/api/v1/",
+        "VISUAL_MODEL_NAME": "qwen/qwen2.5-vl-72b-instruct:free"
       }
     }
   }
@@ -33,6 +39,10 @@ go build
 
 - DEVICE_ID : 必需。Android 设备的 ID，可以通过 adb devices 命令获取。
 - SCREEN_LOCK_PASSWORD : 可选。设备的屏幕锁定密码，用于解锁屏幕。
+- VISUAL_MODEL_ON : 可选。是否启用视觉模型，默认为 false。
+- VISUAL_MODEL_API_KEY : API密钥。
+- VISUAL_MODEL_BASE_URL : API BaseURL。
+- VISUAL_MODEL_NAME : 模型名称。
 
 ### 功能和工具
 
@@ -69,7 +79,7 @@ go build
 
 - screen_size : 获取 Android 设备屏幕尺寸
 - screen_dpi : 获取 Android 设备屏幕 DPI
-- screenshot : 获取 Android 设备屏幕截图
+- screenshot_description : 获取 Android 设备屏幕截图描述
 - system_info : 获取 Android 设备系统信息
 
 其他功能
