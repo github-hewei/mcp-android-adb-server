@@ -467,7 +467,7 @@ func AddToolScreenshotDescription(s *server.MCPServer, d *device.AndroidDevice, 
 			return nil, fmt.Errorf("failed to get screenshot description: %w", err)
 		}
 
-		slog.Info("screenshot", "file", file.Name(), "desc", desc)
+		slog.Info("screenshot_description", "file", file.Name(), "desc", desc)
 		return mcp.NewToolResultText(desc), nil
 	})
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"log/slog"
 	"os"
 	"strings"
 
@@ -70,8 +69,6 @@ func (m *Model) ScreenshotDescription(filename string) (string, error) {
 	}
 
 	content := resp.Choices[0].Message.Content
-	slog.Info("screenshot_description", "file", filename, "response", content)
-
 	return content, nil
 }
 
