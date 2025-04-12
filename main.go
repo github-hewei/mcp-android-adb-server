@@ -7,6 +7,9 @@ import (
 	"mcp-android-adb-server/tools"
 	"mcp-android-adb-server/vision"
 	"os"
+	"path"
+
+	"github.com/mark3labs/mcp-go/mcp"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 
@@ -14,8 +17,9 @@ import (
 )
 
 func init() {
+	baseDir := getBaseDir()
 	rotateWriter := &lumberjack.Logger{
-		Filename:   "mcp-android-adb.log",
+		Filename:   path.Join(baseDir, "mcp-android-adb-server.log"),
 		MaxSize:    10,
 		MaxBackups: 5,
 		MaxAge:     30,
@@ -30,10 +34,16 @@ func init() {
 }
 
 func main() {
+	wd, _ := os.Getwd()
+	slog.Info("server start", "directory", wd)
+
 	deviceId := os.Getenv("DEVICE_ID")
 	screenLockPassword := os.Getenv("SCREEN_LOCK_PASSWORD")
 
-	d, err := device.NewAndroidDevice(deviceId, device.WithScreenPassword(screenLockPassword))
+	d, err := device.NewAndroidDevice(
+		deviceId,
+		device.WithScreenPassword(screenLockPassword),
+		device.WithScreenshotPath(path.Join(getBaseDir(), "screenshots")))
 
 	if err != nil {
 		slog.Error("error connect android device", "error", err)
@@ -45,6 +55,7 @@ func main() {
 		"1.0.0",
 		server.WithResourceCapabilities(true, true),
 		server.WithLogging(),
+		server.WithHooks(getHooks()),
 	)
 
 	// Register all tools
@@ -100,4 +111,70 @@ func registerTools(s *server.MCPServer, d *device.AndroidDevice) {
 		m := vision.NewModel(visualModelApiKey, visualModelName, visualModelBaseUrl)
 		tools.AddToolScreenshotDescription(s, d, m)
 	}
+}
+
+// getHooks returns all hooks
+func getHooks() *server.Hooks {
+	hooks := &server.Hooks{}
+
+	hooks.AddBeforeAny(func(id any, method mcp.MCPMethod, message any) {
+		slog.Info("before any hook called",
+			"method", method,
+			"id", id,
+			"message", message)
+	})
+
+	hooks.AddOnSuccess(func(id any, method mcp.MCPMethod, message any, result any) {
+		slog.Info("operation completed successfully",
+			"method", method,
+			"id", id,
+			"message", message,
+			"result", result)
+	})
+
+	hooks.AddOnError(func(id any, method mcp.MCPMethod, message any, err error) {
+		slog.Error("operation failed",
+			"method", method,
+			"id", id,
+			"message", message,
+			"error", err)
+	})
+
+	hooks.AddBeforeInitialize(func(id any, message *mcp.InitializeRequest) {
+		slog.Info("initializing",
+			"id", id,
+			"message", message)
+	})
+
+	hooks.AddAfterInitialize(func(id any, message *mcp.InitializeRequest, result *mcp.InitializeResult) {
+		slog.Info("initialization completed",
+			"id", id,
+			"message", message,
+			"result", result)
+	})
+
+	hooks.AddAfterCallTool(func(id any, message *mcp.CallToolRequest, result *mcp.CallToolResult) {
+		slog.Info("tool call completed",
+			"id", id,
+			"message", message,
+			"result", result)
+	})
+
+	hooks.AddBeforeCallTool(func(id any, message *mcp.CallToolRequest) {
+		slog.Info("calling tool",
+			"id", id,
+			"message", message)
+	})
+
+	return hooks
+}
+
+// getBaseDir returns the base directory
+func getBaseDir() string {
+	baseDir, _ := os.UserHomeDir()
+	if baseDir == "" {
+		baseDir = os.TempDir()
+	}
+
+	return path.Join(baseDir, "mcp-android-adb-server")
 }

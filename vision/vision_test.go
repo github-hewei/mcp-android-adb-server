@@ -71,7 +71,7 @@ func TestScreenshotDescription(t *testing.T) {
 		"https://openrouter.ai/api/v1/",
 	)
 
-	description, err := model.ScreenshotDescription(testImagePath)
+	description, err := model.ScreenshotDescription(testImagePath, 1080, 2400)
 	if err != nil {
 		t.Errorf("ScreenshotDescription failed: %v", err)
 	}

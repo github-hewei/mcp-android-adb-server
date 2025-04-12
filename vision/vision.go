@@ -57,16 +57,19 @@ func NewModel(apiKey, modelName, baseUrl string) *Model {
 }
 
 // ScreenshotDescription takes a screenshot of the device and returns a description of the image.
-func (m *Model) ScreenshotDescription(filename string) (string, error) {
+func (m *Model) ScreenshotDescription(filename string, width, height int) (string, error) {
 	imageBase64, err := Image2Base64(filename)
 	if err != nil {
 		return "", fmt.Errorf("failed to convert image to base64: %w", err)
 	}
 
+	replacer := strings.NewReplacer("^", "`", "{width}", strconv.Itoa(width), "{height}", strconv.Itoa(height))
+	systemPrompt := replacer.Replace(SystemPrompt)
+
 	messages := []openai.ChatCompletionMessage{
 		{
 			Role:    openai.ChatMessageRoleSystem,
-			Content: strings.ReplaceAll(SystemPrompt, "^", "`"),
+			Content: systemPrompt,
 		},
 		{
 			Role: openai.ChatMessageRoleUser,
@@ -87,6 +90,9 @@ func (m *Model) ScreenshotDescription(filename string) (string, error) {
 		openai.ChatCompletionRequest{
 			Model:    m.modelName,
 			Messages: messages,
+			ResponseFormat: &openai.ChatCompletionResponseFormat{
+				Type: openai.ChatCompletionResponseFormatTypeJSONObject,
+			},
 		})
 
 	if err != nil {

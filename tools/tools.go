@@ -462,7 +462,12 @@ func AddToolScreenshotDescription(s *server.MCPServer, d *device.AndroidDevice, 
 		}
 		defer file.Close()
 
-		desc, err := m.ScreenshotDescription(file.Name())
+		width, height, err := d.ScreenSize()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get screen size: %w", err)
+		}
+
+		desc, err := m.ScreenshotDescription(file.Name(), width, height)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get screenshot description: %w", err)
 		}
