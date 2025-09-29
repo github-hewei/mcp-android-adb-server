@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"log/slog"
 	"mcp-android-adb-server/device"
 	"mcp-android-adb-server/tools"
@@ -26,7 +25,7 @@ func init() {
 		Compress:   true,
 	}
 
-	logger := slog.New(slog.NewJSONHandler(io.MultiWriter(os.Stdout, rotateWriter), &slog.HandlerOptions{
+	logger := slog.New(slog.NewJSONHandler(rotateWriter, &slog.HandlerOptions{
 		Level: slog.LevelDebug,
 	}))
 

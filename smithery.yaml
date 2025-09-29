@@ -14,4 +14,4 @@ startCommand:
   commandFunction:
     # A function that produces the CLI command to start the MCP on stdio.
     |-
-    config => ({ command: 'mcp-wecombot-server', env: { DEVICE_ID: config.deviceId, SCREEN_LOCK_PASSWORD: '' } })
+    config => ({ command: 'D:/path/mcp-android-adb-server/mcp-android-adb-server.exe', env: { DEVICE_ID: config.deviceId, SCREEN_LOCK_PASSWORD: '' } })
