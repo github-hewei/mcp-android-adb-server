@@ -1,10 +1,13 @@
+[![English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
+[![简体中文](https://img.shields.io/badge/语言-简体中文-red.svg)](./README.zh-CN.md)
+
 ## 🚀 mcp-android-adb-server
 
 [![smithery badge](https://smithery.ai/badge/@github-hewei/mcp-android-adb-server)](https://smithery.ai/server/@github-hewei/mcp-android-adb-server)
 
-一个MCP服务用于通过adb操作安卓设备。
+An MCP service for operating Android devices via ADB.
 
-2025-04-01：增加支持用视觉模型如`qwen2.5-vl`获取屏幕描述内容。
+2025-04-01: Added support for obtaining screen description content using visual models like `qwen2.5-vl`.
 
 ### Manual Installation
 
@@ -35,52 +38,53 @@ go build
 }
 ```
 
-### 环境变量
+### Environment Variables
 
-- DEVICE_ID : 必需。Android 设备的 ID，可以通过 adb devices 命令获取。
-- SCREEN_LOCK_PASSWORD : 可选。设备的屏幕锁定密码，用于解锁屏幕。
-- VISUAL_MODEL_ON : 可选。是否启用视觉模型，默认为 false。
-- VISUAL_MODEL_API_KEY : API密钥。
-- VISUAL_MODEL_BASE_URL : API BaseURL。
-- VISUAL_MODEL_NAME : 模型名称。
+- DEVICE_ID : Required. The ID of the Android device, obtainable via the `adb devices` command.
+- SCREEN_LOCK_PASSWORD : Optional. The screen lock password of the device, used to unlock the screen.
+- VISUAL_MODEL_ON : Optional. Whether to enable the visual model, defaults to false.
+- VISUAL_MODEL_API_KEY : API Key.
+- VISUAL_MODEL_BASE_URL : API Base URL.
+- VISUAL_MODEL_NAME : Model name.
 
-### 功能和工具
+### Features and Tools
 
-应用管理
-- install_app : 在 Android 设备上安装应用程序
-- uninstall_app : 从 Android 设备卸载应用程序
-- terminate_app : 终止 Android 设备上运行的应用程序
-- launch_app : 启动 Android 设备上的应用程序
-- list_app : 列出 Android 设备上安装的所有应用程序
-- is_app_installed : 检查特定应用程序是否已安装
+Application Management
+- install_app : Install an application on the Android device
+- uninstall_app : Uninstall an application from the Android device
+- terminate_app : Terminate a running application on the Android device
+- launch_app : Launch an application on the Android device
+- list_app : List all installed applications on the Android device
+- is_app_installed : Check if a specific application is installed
 
-屏幕控制
-- unlock_screen : 解锁 Android 设备屏幕
-- lock_screen : 锁定 Android 设备屏幕
-- is_screen_locked : 检查 Android 设备屏幕是否锁定
-- is_screen_active : 检查 Android 设备屏幕是否活跃
+Screen Control
+- unlock_screen : Unlock the Android device screen
+- lock_screen : Lock the Android device screen
+- is_screen_locked : Check if the Android device screen is locked
+- is_screen_active : Check if the Android device screen is active
 
-输入控制
+Input Control
 
-- input_text : 在 Android 设备上输入文本
-- input_key : 在 Android 设备上输入按键
-- tap : 在屏幕上点击指定位置
-- long_tap : 在屏幕上长按指定位置
-- back : 执行返回操作
+- input_text : Input text on the Android device
+- input_key : Input key press on the Android device
+- tap : Perform a tap operation on the screen at a specified position
+- long_tap : Perform a long press operation on the screen at a specified position
+- back : Perform a back operation
 
-手势控制
+Gesture Control
 
-- swipe_up : 在 Android 设备屏幕上执行向上滑动手势
-- swipe_down : 在 Android 设备屏幕上执行向下滑动手势
-- swipe_left : 在 Android 设备屏幕上执行向左滑动手势
-- swipe_right : 在 Android 设备屏幕上执行向右滑动手势
+- swipe_up : Perform a swipe up gesture on the Android device screen
+- swipe_down : Perform a swipe down gesture on the Android device screen
+- swipe_left : Perform a swipe left gesture on the Android device screen
+- swipe_right : Perform a swipe right gesture on the Android device screen
 
-设备信息
+Device Information
 
-- screen_size : 获取 Android 设备屏幕尺寸
-- screen_dpi : 获取 Android 设备屏幕 DPI
-- screenshot_description : 获取 Android 设备屏幕截图描述
-- system_info : 获取 Android 设备系统信息
+- screen_size : Get the screen size of the Android device
+- screen_dpi : Get the screen DPI of the Android device
+- screenshot_description : Get the Android device screenshot description
+- system_info : Get system information of the Android device
 
-其他功能
-- shell_command : 在 Android 设备上执行 shell 命令
+Other Functions
+- shell_command : Execute a shell command on the Android device
+
